@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             // The user canceled the operation.
             Log.i(TAG, "User canceled autocomplete")
         }
+        binding.searchEditText.clearFocus()
     }
 
     private fun startAutoCompleteIntent() {

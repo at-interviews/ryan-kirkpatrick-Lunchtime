@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -26,10 +29,14 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,8 +51,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.google.android.libraries.places.api.model.Place
 import com.kirkpatrick.lunchtime.databinding.FragmentRestaurantListBinding
+import com.kirkpatrick.lunchtime.ui.theme.FavoriteHeartUnselected
+import com.kirkpatrick.lunchtime.ui.theme.ListBackgroundColor
+import com.kirkpatrick.lunchtime.ui.theme.RatingStarFilled
+import com.kirkpatrick.lunchtime.ui.theme.RatingStarUnfilled
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -61,36 +76,64 @@ class RestaurantListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
+
+                val restaurants by restaurantSearchViewModel.restaurants.collectAsState()
+
                 MaterialTheme {
-                    Column(
+                    LazyColumn( //TODO check on this
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(color = Color(0xF5F5F5FF))
-                            .verticalScroll(rememberScrollState())
+                            .background(color = ListBackgroundColor)
                             .padding(horizontal = 16.dp)
                     ) {
-                        for(i in 1..15) {
-                            RestaurantCardView(modifier = Modifier.padding(vertical = 8.dp))
+                        itemsIndexed(
+                            restaurants,
+                            key = { _, restaurant -> restaurant.id }) { index, restaurant ->
+                            if (index == 0) {
+                                HorizontalDivider(thickness = 16.dp, color = ListBackgroundColor)
+                            }
+                            RestaurantCardView(
+                                modifier = Modifier.padding(bottom = 16.dp),
+                                restaurant = restaurant
+                            )
                         }
+
                     }
                 }
             }
         }
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         restaurantSearchViewModel.searchNearby()
+        lifecycleScope.launch {
+            restaurantSearchViewModel.restaurants.collect { restaurants ->
+
+                
+            }
+        }
     }
 }
 
 
-@Preview(widthDp = 300, heightDp = 100)
+//@Preview(widthDp = 300, heightDp = 100)
+//@Composable
+//fun RestaurantCardViewPreview() {
+//    RestaurantCardView()
+//}
+
 @Composable
-fun RestaurantCardView(modifier: Modifier = Modifier) {
+fun RestaurantCardView(
+    modifier: Modifier = Modifier,
+    restaurant: Place
+) {
     OutlinedCard(
+        modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = Color.White,
         )
     ) {
         Row(
@@ -112,16 +155,16 @@ fun RestaurantCardView(modifier: Modifier = Modifier) {
             ) {
                 Text(
                     modifier = Modifier.padding(start = 2.dp),
-                    text = "Restaurant Name",
+                    text = restaurant.displayName ?: "",
                     fontSize = 16.sp
                 )
                 StarRatingView(
-                    rating = SystemClock.uptimeMillis() % 5.0,
-                    totalRatings = 142
+                    rating = restaurant.rating ?: 0.0,
+                    totalRatings = restaurant.userRatingCount ?: 0
                 )
                 Text(
                     modifier = Modifier.padding(start = 2.dp),
-                    text = "$$$",
+                    text = "$".repeat(restaurant.priceLevel ?: 1),
                     fontSize = 12.sp
                 )
             }
@@ -129,6 +172,7 @@ fun RestaurantCardView(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(width = 22.dp, height = 20.dp),
                 imageVector = Icons.Outlined.FavoriteBorder,
+                colorFilter = ColorFilter.tint(FavoriteHeartUnselected),
                 contentDescription = "Favorite Button"
             )
         }
@@ -156,7 +200,7 @@ fun StarRatingView(
                 imageVector = Icons.Filled.Star,
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(
-                    Color(if(i <= rating) 0xF5D24B00 else 0xE6E6E6FF)
+                    if(i <= rating) RatingStarFilled else RatingStarUnfilled
                 )
             )
         }
