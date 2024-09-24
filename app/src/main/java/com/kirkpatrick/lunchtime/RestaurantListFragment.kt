@@ -50,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.libraries.places.api.model.Place
@@ -66,7 +67,7 @@ import kotlin.random.Random
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
 
-    private val restaurantSearchViewModel: RestaurantSearchViewModel by viewModels()
+    private val restaurantSearchViewModel by activityViewModels<RestaurantSearchViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -156,7 +157,8 @@ fun RestaurantCardView(
                 Text(
                     modifier = Modifier.padding(start = 2.dp),
                     text = restaurant.displayName ?: "",
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    maxLines = 1
                 )
                 StarRatingView(
                     rating = restaurant.rating ?: 0.0,

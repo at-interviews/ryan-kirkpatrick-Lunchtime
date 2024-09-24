@@ -44,4 +44,9 @@ class RestaurantSearchViewModel @Inject constructor(
             }
     }
 
+    fun updateRestaurantsFromQuery(place: Place) {
+        _restaurants.value = listOf(place)
+
+    }
+
 }

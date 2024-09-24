@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.PlaceTypes
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
@@ -20,6 +22,7 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityLayoutBinding
+    private val restaurantViewModel by viewModels<RestaurantSearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity() {
             if (intent != null) {
                 val place = Autocomplete.getPlaceFromIntent(intent)
                 binding.searchEditText.setText(place.name)
+                restaurantViewModel.updateRestaurantsFromQuery(place)
 
                 // Write a method to read the address components from the Place
                 // and populate the form with the address components
@@ -79,10 +83,13 @@ class MainActivity : AppCompatActivity() {
     private fun startAutoCompleteIntent() {
         // Set the fields to specify which types of place data to
         // return after the user has made a selection.
-        val fields = listOf(Place.Field.ID, Place.Field.LOCATION, Place.Field.DISPLAY_NAME)
+        val fields = listOf(
+            Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.RATING,
+            Place.Field.USER_RATING_COUNT, Place.Field.PRICE_LEVEL)
 
         // Start the autocomplete intent.
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+            .setTypeFilter(TypeFilter.ESTABLISHMENT)
             .build(this)
         startAutocomplete.launch(intent)
     }
