@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.androidx.constraint)
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui)
     implementation(platform(libs.kotlin.bom))
