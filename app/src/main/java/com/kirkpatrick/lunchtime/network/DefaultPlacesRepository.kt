@@ -3,6 +3,7 @@ package com.kirkpatrick.lunchtime.network
 import com.kirkpatrick.lunchtime.network.model.LocationRestriction
 import com.kirkpatrick.lunchtime.network.model.NearbySearchRequest
 import com.kirkpatrick.lunchtime.network.model.Place
+import com.kirkpatrick.lunchtime.network.model.TextSearchRequest
 
 class DefaultPlacesRepository(
     private val placesApi: PlacesApi
@@ -16,6 +17,10 @@ class DefaultPlacesRepository(
                 locationRestriction = locationRestriction
             )
         ).places
+    }
+
+    override suspend fun searchText(query: String): List<Place> {
+        return placesApi.searchText(TextSearchRequest(query)).places
     }
 
     private companion object {

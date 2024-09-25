@@ -1,35 +1,24 @@
 package com.kirkpatrick.lunchtime
 
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.twotone.Star
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -41,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -52,7 +40,6 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.kirkpatrick.lunchtime.network.model.Place
 import com.kirkpatrick.lunchtime.ui.theme.FavoriteHeartUnselected
 import com.kirkpatrick.lunchtime.ui.theme.ListBackgroundColor
 import com.kirkpatrick.lunchtime.ui.theme.RatingStarFilled
@@ -116,11 +103,19 @@ class RestaurantListFragment : Fragment() {
 }
 
 
-//@Preview(widthDp = 300, heightDp = 100)
-//@Composable
-//fun RestaurantCardViewPreview() {
-//    RestaurantCardView()
-//}
+@Preview(widthDp = 300, heightDp = 100)
+@Composable
+fun RestaurantCardViewPreview() {
+    RestaurantCardView(
+        restaurant = UiPlace(
+            id = "123",
+            rating = 4.2,
+            userRatingCount = 460,
+            priceLevel = 2,
+            name = "Roberto's"
+        )
+    )
+}
 
 @Composable
 fun RestaurantCardView(
@@ -150,7 +145,7 @@ fun RestaurantCardView(
                     .weight(1f)
                     .padding(start = 12.dp)
             ) {
-                Text(
+                Text( //TODO Add font to project
                     modifier = Modifier.padding(start = 2.dp),
                     text = restaurant.name,
                     fontSize = 16.sp,
@@ -166,7 +161,7 @@ fun RestaurantCardView(
                     fontSize = 12.sp
                 )
             }
-            Image(
+            Image( //TODO load image from API
                 modifier = Modifier
                     .size(width = 22.dp, height = 20.dp),
                 imageVector = Icons.Outlined.FavoriteBorder,

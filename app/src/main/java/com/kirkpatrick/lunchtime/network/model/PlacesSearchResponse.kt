@@ -2,7 +2,7 @@ package com.kirkpatrick.lunchtime.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class NearbySearchResponse(
+data class PlacesSearchResponse(
     @SerializedName("places") val places: List<Place>
 )
 

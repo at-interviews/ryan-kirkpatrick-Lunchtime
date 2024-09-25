@@ -29,6 +29,18 @@ class RestaurantSearchViewModel @Inject constructor(
     private val _restaurants = MutableStateFlow<List<UiPlace>>(emptyList())
     val restaurants: StateFlow<List<UiPlace>> = _restaurants.asStateFlow()
 
+    fun searchText(query: String) {
+        if(query.isEmpty()) return
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                placesRepository.searchText(query)
+                    .map { it.toUiPlace() }.let { _restaurants.value = it }
+            } catch (exception: Exception) {
+                Log.e("textSearch", "Failed to search text", exception)
+            }
+        }
+    }
+
     fun searchNearby() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -44,31 +56,27 @@ class RestaurantSearchViewModel @Inject constructor(
                     )
                 )
 
-                places.map {
-                    UiPlace(
-                        id = it.id,
-                        rating = it.rating,
-                        userRatingCount = it.userRatingCount,
-                        name = it.displayName.text,
-                        priceLevel = when(it.priceLevel) {
-                            "PRICE_LEVEL_INEXPENSIVE" -> 1
-                            "PRICE_LEVEL_MODERATE" -> 2
-                            "PRICE_LEVEL_EXPENSIVE" -> 3
-                            else -> 0
-                        })
-                }.let {
-                    _restaurants.value = it
-                }
+                places.map { it.toUiPlace() }.let { _restaurants.value = it }
+
             } catch (exception: Exception) {
                 Log.e("searchNearby", "Failed to search nearby", exception)
             }
         }
     }
 
-    fun updateRestaurantsFromQuery(place: Place) {
-
-
-    }
+    fun Place.toUiPlace() =
+        UiPlace(
+            id = this.id,
+            rating = this.rating,
+            userRatingCount = this.userRatingCount,
+            name = this.displayName.text,
+            priceLevel = when(this.priceLevel) {
+                "PRICE_LEVEL_INEXPENSIVE" -> 1
+                "PRICE_LEVEL_MODERATE" -> 2
+                "PRICE_LEVEL_EXPENSIVE" -> 3
+                else -> 0
+            }
+        )
 
 }
 
