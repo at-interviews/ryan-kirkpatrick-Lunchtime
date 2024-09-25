@@ -40,6 +40,11 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.kirkpatrick.lunchtime.ui.theme.FavoriteHeartUnselected
 import com.kirkpatrick.lunchtime.ui.theme.ListBackgroundColor
 import com.kirkpatrick.lunchtime.ui.theme.RatingStarFilled
@@ -62,41 +67,34 @@ class RestaurantListFragment : Fragment() {
             setContent {
 
                 val restaurants by restaurantSearchViewModel.restaurants.collectAsState()
+                val loading by restaurantSearchViewModel.loading.collectAsState()
 
                 MaterialTheme {
-                    LazyColumn( //TODO check on this
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = ListBackgroundColor)
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        itemsIndexed(
-                            restaurants,
-                            key = { _, restaurant -> restaurant.id }) { index, restaurant ->
-                            if (index == 0) {
-                                HorizontalDivider(thickness = 16.dp, color = ListBackgroundColor)
+                    if(loading) {
+                        Loader()
+                    } else {
+                        LazyColumn( //TODO check on this
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = ListBackgroundColor)
+                                .padding(horizontal = 16.dp)
+                        ) {
+                            itemsIndexed(
+                                restaurants,
+                                key = { _, restaurant -> restaurant.id }
+                            ) { index, restaurant ->
+                                if (index == 0) {
+                                    HorizontalDivider(thickness = 16.dp, color = ListBackgroundColor)
+                                }
+                                RestaurantCardView(
+                                    modifier = Modifier.padding(bottom = 16.dp),
+                                    restaurant = restaurant
+                                )
                             }
-                            RestaurantCardView(
-                                modifier = Modifier.padding(bottom = 16.dp),
-                                restaurant = restaurant
-                            )
-                        }
 
+                        }
                     }
                 }
-            }
-        }
-    }
-
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        restaurantSearchViewModel.searchNearby()
-        lifecycleScope.launch {
-            restaurantSearchViewModel.restaurants.collect { restaurants ->
-
-                
             }
         }
     }
@@ -203,5 +201,14 @@ fun StarRatingView(
             fontSize = 12.sp
         )
     }
+}
+
+@Composable
+fun Loader() {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_loading))
+    LottieAnimation(
+        composition = composition,
+        iterations = LottieConstants.IterateForever
+    )
 }
 

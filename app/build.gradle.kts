@@ -88,6 +88,8 @@ dependencies {
     implementation(platform(libs.kotlin.bom))
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.google.play.services)
+    implementation(libs.lottie)
 
     implementation(libs.retrofit)
     implementation(libs.okhttp)
