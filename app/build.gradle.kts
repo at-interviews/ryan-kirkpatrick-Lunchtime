@@ -86,7 +86,6 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui)
     implementation(platform(libs.kotlin.bom))
-    implementation(libs.places)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 

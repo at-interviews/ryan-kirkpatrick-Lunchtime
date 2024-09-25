@@ -3,9 +3,6 @@ package com.kirkpatrick.lunchtime
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.model.CircularBounds
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.kirkpatrick.lunchtime.network.PlacesRepository
 import com.kirkpatrick.lunchtime.network.model.Center
 import com.kirkpatrick.lunchtime.network.model.Circle
@@ -24,11 +21,10 @@ class RestaurantSearchViewModel @Inject constructor(
     private val placesRepository: PlacesRepository
 ) : ViewModel() {
 
-    private val bounds = CircularBounds.newInstance(
-        LatLng(32.9892, -117.2724),
-        10000.0
-    )
-    private val includedTypes = listOf("restaurant")
+//    private val bounds = CircularBounds.newInstance(
+//        LatLng(32.9892, -117.2724),
+//        10000.0
+//    )
 
     private val _restaurants = MutableStateFlow<List<UiPlace>>(emptyList())
     val restaurants: StateFlow<List<UiPlace>> = _restaurants.asStateFlow()
@@ -37,8 +33,6 @@ class RestaurantSearchViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val places = placesRepository.searchNearby(
-                    includedTypes = listOf("restaurant"),
-                    maxResultCount = 10,
                     locationRestriction = LocationRestriction(
                         Circle(
                             center = Center(

@@ -8,17 +8,18 @@ class DefaultPlacesRepository(
     private val placesApi: PlacesApi
 ) : PlacesRepository {
 
-    override suspend fun searchNearby(
-        includedTypes: List<String>,
-        maxResultCount: Int,
-        locationRestriction: LocationRestriction
-    ): List<Place> {
+    override suspend fun searchNearby(locationRestriction: LocationRestriction): List<Place> {
         return placesApi.searchNearby(
             NearbySearchRequest(
-                includedTypes = includedTypes,
-                maxResultCount = maxResultCount,
+                includedTypes = listOf(INCLUDED_TYPES),
+                maxResultCount = MAX_RESULT_COUNT,
                 locationRestriction = locationRestriction
             )
         ).places
+    }
+
+    private companion object {
+        private const val MAX_RESULT_COUNT = 20
+        private const val INCLUDED_TYPES = "restaurant"
     }
 }
