@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             if (intent != null) {
                 val place = Autocomplete.getPlaceFromIntent(intent)
                 binding.searchEditText.setText(place.name)
-                restaurantViewModel.updateRestaurantsFromQuery(place)
+                restaurantViewModel.searchNearby()
 
                 // Write a method to read the address components from the Place
                 // and populate the form with the address components

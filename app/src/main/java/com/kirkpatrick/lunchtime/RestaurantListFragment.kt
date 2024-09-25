@@ -51,18 +51,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.libraries.places.api.model.Place
-import com.kirkpatrick.lunchtime.databinding.FragmentRestaurantListBinding
+import com.kirkpatrick.lunchtime.network.model.Place
 import com.kirkpatrick.lunchtime.ui.theme.FavoriteHeartUnselected
 import com.kirkpatrick.lunchtime.ui.theme.ListBackgroundColor
 import com.kirkpatrick.lunchtime.ui.theme.RatingStarFilled
 import com.kirkpatrick.lunchtime.ui.theme.RatingStarUnfilled
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
@@ -129,7 +125,7 @@ class RestaurantListFragment : Fragment() {
 @Composable
 fun RestaurantCardView(
     modifier: Modifier = Modifier,
-    restaurant: Place
+    restaurant: UiPlace
 ) {
     OutlinedCard(
         modifier = modifier,
@@ -156,17 +152,17 @@ fun RestaurantCardView(
             ) {
                 Text(
                     modifier = Modifier.padding(start = 2.dp),
-                    text = restaurant.displayName ?: "",
+                    text = restaurant.name,
                     fontSize = 16.sp,
                     maxLines = 1
                 )
                 StarRatingView(
-                    rating = restaurant.rating ?: 0.0,
-                    totalRatings = restaurant.userRatingCount ?: 0
+                    rating = restaurant.rating,
+                    totalRatings = restaurant.userRatingCount
                 )
                 Text(
                     modifier = Modifier.padding(start = 2.dp),
-                    text = "$".repeat(restaurant.priceLevel ?: 1),
+                    text = "$".repeat(restaurant.priceLevel),
                     fontSize = 12.sp
                 )
             }
