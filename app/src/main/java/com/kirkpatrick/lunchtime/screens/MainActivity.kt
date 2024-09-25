@@ -1,4 +1,4 @@
-package com.kirkpatrick.lunchtime
+package com.kirkpatrick.lunchtime.screens
 
 import android.content.Context
 import android.os.Bundle
@@ -12,18 +12,28 @@ import com.google.android.gms.location.LocationServices
 import com.kirkpatrick.lunchtime.databinding.MainActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.kirkpatrick.lunchtime.R
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityLayoutBinding
     private val restaurantViewModel by viewModels<RestaurantSearchViewModel>()
+
+    private val navHostFragment by lazy {
+        supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+    }
+    //private val navController = navHostFragment.navController
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -59,8 +69,15 @@ class MainActivity : AppCompatActivity() {
             binding.searchEditText.clearFocus()
         }
 
+        binding.buttonText.setText(R.string.map)
+
+        binding.switchScreensButton.setOnClickListener {
+            navHostFragment.findNavController().navigate(R.id.action_restaurantListFragment_to_restaurantMapFragment)
+        }
+
     }
 
+    @SuppressLint("MissingPermission")
     private fun getCurrentLocation() {
         restaurantViewModel.setLoading(true)
 

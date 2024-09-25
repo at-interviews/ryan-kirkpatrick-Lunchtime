@@ -1,4 +1,4 @@
-package com.kirkpatrick.lunchtime
+package com.kirkpatrick.lunchtime.screens
 
 import android.location.Location
 import android.util.Log
@@ -25,13 +25,25 @@ class RestaurantSearchViewModel @Inject constructor(
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
+    var lastLocation: Location? = null
+        private set
+
     fun searchText(query: String) {
         if(query.isEmpty()) return
         _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                placesRepository.searchText(query)
-                    .map { it.toUiPlace() }.let { _restaurants.value = it }
+                val places = placesRepository.searchText(query).map { it.toUiPlace() }
+                _restaurants.value = places
+                if(places.isNotEmpty()) {
+                    lastLocation = places.first().let {
+                        Location(null).apply {
+                            latitude = it.latitude
+                            longitude = it.longitude
+                        }
+                    }
+                }
+
                 _loading.value = false
             } catch (exception: Exception) {
                 Log.e("textSearch", "Failed to search text", exception)
@@ -41,6 +53,7 @@ class RestaurantSearchViewModel @Inject constructor(
     }
 
     fun searchNearby(location: Location) {
+        lastLocation = location
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 placesRepository.searchNearby(location.latitude, location.longitude)
@@ -65,7 +78,9 @@ class RestaurantSearchViewModel @Inject constructor(
                 "PRICE_LEVEL_EXPENSIVE" -> 3
                 "PRICE_LEVEL_VERY_EXPENSIVE" -> 4
                 else -> 0
-            }
+            },
+            latitude = this.location.latitude,
+            longitude = this.location.longitude
         )
 
     fun setLoading(loading: Boolean) { _loading.value = loading }
@@ -77,5 +92,7 @@ data class UiPlace(
     val rating: Double,
     val userRatingCount: Int,
     val priceLevel: Int,
-    val name: String
+    val name: String,
+    val latitude: Double,
+    val longitude: Double
 )

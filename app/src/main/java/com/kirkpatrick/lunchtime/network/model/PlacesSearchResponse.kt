@@ -11,10 +11,16 @@ data class Place(
     @SerializedName("rating") val rating: Double,
     @SerializedName("userRatingCount") val userRatingCount: Int,
     @SerializedName("priceLevel") val priceLevel: String? = null,
-    @SerializedName("displayName") val displayName: DisplayName
+    @SerializedName("displayName") val displayName: DisplayName,
+    @SerializedName("location") val location: Location
 )
 
 data class DisplayName(
     @SerializedName("text") val text: String,
     @SerializedName("languageCode") val languageCode: String
+)
+
+data class Location(
+    @SerializedName("latitude") val latitude: Double,
+    @SerializedName("longitude") val longitude: Double
 )

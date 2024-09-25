@@ -16,6 +16,7 @@ appcompat = "1.4.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
 play-services = "21.3.0"
+play-maps = "19.0.0"
 lottie = "6.5.2"
 
 [libraries]
@@ -48,6 +49,7 @@ secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.se
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt"}
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 google-play-services = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services"}
+google-maps-sdk = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "play-maps"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

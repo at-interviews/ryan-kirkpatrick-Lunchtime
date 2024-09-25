@@ -58,5 +58,35 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline"
         app:navGraph="@navigation/lunchtime_nav_graph" />
+    
+    <LinearLayout
+        android:id="@+id/switchScreensButton"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="64dp"
+        android:orientation="horizontal"
+        android:background="@drawable/green_button_background"
+        android:elevation="2dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/buttonIcon"
+            android:layout_width="25dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_map"/>
+
+        <TextView
+            android:id="@+id/buttonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Map"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:paddingEnd="1dp"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

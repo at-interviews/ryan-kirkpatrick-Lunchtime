@@ -4,4 +4,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_hint">Search for a restaurant</string>
     <string name="at_lunch">at Lunch</string>
+    <string name="map">Map</string>
 </resources>

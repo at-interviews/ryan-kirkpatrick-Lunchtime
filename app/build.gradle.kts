@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.google.play.services)
+    implementation(libs.google.maps.sdk)
     implementation(libs.lottie)
 
     implementation(libs.retrofit)

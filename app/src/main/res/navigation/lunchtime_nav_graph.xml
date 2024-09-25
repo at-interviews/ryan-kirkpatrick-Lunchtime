@@ -7,8 +7,19 @@
 
     <fragment
         android:id="@+id/restaurantListFragment"
-        android:name="com.kirkpatrick.lunchtime.RestaurantListFragment"
+        android:name="com.kirkpatrick.lunchtime.screens.RestaurantListFragment"
         android:label="RestaurantListFragment"
-        tools:layout="@layout/fragment_restaurant_list"/>
+        tools:layout="@layout/fragment_restaurant_list">
+        <action
+            android:id="@+id/action_restaurantListFragment_to_restaurantMapFragment"
+            app:destination="@id/restaurantMapFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/restaurantMapFragment"
+        android:name="com.kirkpatrick.lunchtime.screens.RestaurantMapFragment"
+        android:label="RestaurantMapFragment"
+        tools:layout="@layout/fragment_restaurant_map"/>
+
 
 </navigation>

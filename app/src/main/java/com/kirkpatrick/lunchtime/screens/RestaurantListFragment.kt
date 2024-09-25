@@ -1,4 +1,4 @@
-package com.kirkpatrick.lunchtime
+package com.kirkpatrick.lunchtime.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -39,18 +39,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.kirkpatrick.lunchtime.R
 import com.kirkpatrick.lunchtime.ui.theme.FavoriteHeartUnselected
 import com.kirkpatrick.lunchtime.ui.theme.ListBackgroundColor
 import com.kirkpatrick.lunchtime.ui.theme.RatingStarFilled
 import com.kirkpatrick.lunchtime.ui.theme.RatingStarUnfilled
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RestaurantListFragment : Fragment() {
@@ -110,7 +108,9 @@ fun RestaurantCardViewPreview() {
             rating = 4.2,
             userRatingCount = 460,
             priceLevel = 2,
-            name = "Roberto's"
+            name = "Roberto's",
+            latitude = 32.7157,
+            longitude = -117.161
         )
     )
 }
