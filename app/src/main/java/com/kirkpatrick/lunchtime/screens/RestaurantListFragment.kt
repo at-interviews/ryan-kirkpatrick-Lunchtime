@@ -73,7 +73,7 @@ class RestaurantListFragment : Fragment() {
                     if(loading) {
                         Loader()
                     } else {
-                        LazyColumn( //TODO check on this
+                        LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(color = ListBackgroundColor)
@@ -92,7 +92,6 @@ class RestaurantListFragment : Fragment() {
                                     onClick = { uiPlace -> navigateToDetailScreen(uiPlace) }
                                 )
                             }
-
                         }
                     }
                 }
@@ -106,26 +105,6 @@ class RestaurantListFragment : Fragment() {
         findNavController().navigate(directions)
     }
 
-}
-
-
-@Preview(widthDp = 300, heightDp = 100)
-@Composable
-fun RestaurantCardViewPreview() {
-    RestaurantCardView(
-        restaurant = UiPlace(
-            id = "123",
-            rating = 4.2,
-            userRatingCount = 460,
-            priceLevel = 2,
-            name = "Roberto's",
-            latitude = 32.7157,
-            longitude = -117.161,
-            address = "123 Fake St, San Diego, CA",
-            description = "This is a description of the restaurant"
-        ),
-        onClick = {}
-    )
 }
 
 @Composable
@@ -151,7 +130,7 @@ fun RestaurantCardView(
             Image(
                 modifier = Modifier.size(width = 72.dp, height = 72.dp),
                 painter = painterResource(id = R.drawable.im_trail_placeholder),
-                contentDescription = "Restaurant Image",
+                contentDescription = "",
                 contentScale = ContentScale.Crop
             )
             Column(
@@ -159,7 +138,7 @@ fun RestaurantCardView(
                     .weight(1f)
                     .padding(start = 12.dp)
             ) {
-                Text( //TODO Add font to project
+                Text(
                     modifier = Modifier.padding(start = 2.dp),
                     text = restaurant.name,
                     fontSize = 16.sp,
@@ -180,16 +159,10 @@ fun RestaurantCardView(
                     .size(width = 22.dp, height = 20.dp),
                 imageVector = Icons.Outlined.FavoriteBorder,
                 colorFilter = ColorFilter.tint(FavoriteHeartUnselected),
-                contentDescription = "Favorite Button"
+                contentDescription = ""
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewStarRatingView() {
-    StarRatingView(rating = 3.2, totalRatings = 142)
 }
 
 @Composable
@@ -228,3 +201,27 @@ fun Loader() {
     )
 }
 
+@Preview(widthDp = 300, heightDp = 100)
+@Composable
+fun RestaurantCardViewPreview() {
+    RestaurantCardView(
+        restaurant = UiPlace(
+            id = "123",
+            rating = 4.2,
+            userRatingCount = 460,
+            priceLevel = 2,
+            name = "Roberto's",
+            latitude = 32.7157,
+            longitude = -117.161,
+            address = "123 Fake St, San Diego, CA",
+            description = "This is a description of the restaurant"
+        ),
+        onClick = {}
+    )
+}
+
+@Preview
+@Composable
+fun PreviewStarRatingView() {
+    StarRatingView(rating = 3.2, totalRatings = 142)
+}

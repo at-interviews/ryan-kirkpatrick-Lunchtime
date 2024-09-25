@@ -18,9 +18,6 @@ import android.location.Location
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.Priority
@@ -36,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     private val navHostFragment by lazy {
         supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
     }
-    //private val navController = navHostFragment.navController
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 

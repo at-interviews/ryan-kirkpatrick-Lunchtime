@@ -23,6 +23,8 @@ import com.kirkpatrick.lunchtime.databinding.FragmentRestaurantMapBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+private const val fl = 13f
+
 @AndroidEntryPoint
 class RestaurantMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
@@ -74,7 +76,7 @@ class RestaurantMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWi
 
         val initialLocation = restaurantSearchViewModel.restaurants.value.firstOrNull()?.let {
             LatLng(it.latitude, it.longitude)
-        } ?: LatLng(32.7157, -117.161)
+        } ?: LatLng(32.7157, -117.161) //Default to San Diego for fun
 
         restaurantSearchViewModel.restaurants.value.forEach {
             val marker = map.addMarker(
@@ -88,7 +90,7 @@ class RestaurantMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWi
 
         map.apply {
             mapType = GoogleMap.MAP_TYPE_NORMAL
-            moveCamera(CameraUpdateFactory.newLatLngZoom(initialLocation, 13f))
+            moveCamera(CameraUpdateFactory.newLatLngZoom(initialLocation, DEFAULT_ZOOM))
             setOnInfoWindowClickListener(this@RestaurantMapFragment)
         }
     }
@@ -100,5 +102,9 @@ class RestaurantMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnInfoWi
                 .actionRestaurantMapFragmentToRestaurantDetailFragment(it)
             findNavController().navigate(directions)
         }
+    }
+
+    private companion object {
+        const val DEFAULT_ZOOM = 13F
     }
 }

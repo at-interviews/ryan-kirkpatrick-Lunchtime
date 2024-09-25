@@ -29,11 +29,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.kirkpatrick.lunchtime.R
-import com.kirkpatrick.lunchtime.databinding.FragmentRestaurantDetailBinding
 
 class RestaurantDetailFragment : Fragment() {
-
-    private lateinit var binding: FragmentRestaurantDetailBinding
 
     val args: RestaurantDetailFragmentArgs by navArgs()
 
@@ -67,14 +64,14 @@ fun RestaurantDetailScreen(
                 .clickable { onBackClick() }
                 .padding(top = 2.dp, start = 2.dp, end = 2.dp, bottom = 4.dp),
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Go back"
+            contentDescription = ""
         )
         Image(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(280.dp),
             painter = painterResource(id = R.drawable.im_trail_placeholder),
-            contentDescription = "Restaurant Image",
+            contentDescription = "",
             contentScale = ContentScale.FillBounds
         )
         Column(

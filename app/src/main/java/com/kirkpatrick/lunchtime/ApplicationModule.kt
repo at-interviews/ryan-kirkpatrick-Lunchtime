@@ -25,7 +25,7 @@ object ApplicationModule {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
-        //TODO Move to API
+        //TODO Move to configuration object
         val fields = listOf("places.id", "places.displayName", "places.rating",
             "places.user_rating_count", "places.price_level", "places.location",
             "places.formattedAddress", "places.editorialSummary").joinToString(",")
@@ -36,6 +36,7 @@ object ApplicationModule {
                     .addHeader("Content-Type", "application/json")
                     .addHeader("X-Goog-FieldMask", fields)
                     .addHeader("X-Goog-Api-Key", BuildConfig.PLACES_API_KEY)
+                    //.addHeader("X-Goog-Api-Key", "AIzaSyC8jnuXp0CJr8FzYMg_mG-d7__1xUdfiQw") //Uncomment if you want to use my key and remove line above
                     .build()
                 chain.proceed(request)
             })
