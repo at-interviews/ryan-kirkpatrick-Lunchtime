@@ -17,6 +17,8 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -72,7 +74,29 @@ class MainActivity : AppCompatActivity() {
         binding.buttonText.setText(R.string.map)
 
         binding.switchScreensButton.setOnClickListener {
-            navHostFragment.findNavController().navigate(R.id.action_restaurantListFragment_to_restaurantMapFragment)
+            navHostFragment.findNavController().currentDestination?.let {
+                when(it.id) {
+                    R.id.restaurantListFragment -> {
+                        navHostFragment.findNavController().navigate(R.id.action_restaurantListFragment_to_restaurantMapFragment)
+                    }
+                    R.id.restaurantMapFragment -> navHostFragment.findNavController().popBackStack()
+                    else -> Log.e(TAG, "Unknown current destination")
+                }
+            }
+        }
+
+        navHostFragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.restaurantMapFragment -> {
+                    binding.buttonText.setText(R.string.list)
+                    binding.buttonIcon.setImageDrawable(getDrawable(R.drawable.ic_list))
+                }
+
+                R.id.restaurantListFragment -> {
+                    binding.buttonText.setText(R.string.map)
+                    binding.buttonIcon.setImageDrawable(getDrawable(R.drawable.ic_map))
+                }
+            }
         }
 
     }

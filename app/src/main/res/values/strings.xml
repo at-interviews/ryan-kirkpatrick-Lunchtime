@@ -5,4 +5,5 @@
     <string name="search_hint">Search for a restaurant</string>
     <string name="at_lunch">at Lunch</string>
     <string name="map">Map</string>
+    <string name="list">List</string>
 </resources>
