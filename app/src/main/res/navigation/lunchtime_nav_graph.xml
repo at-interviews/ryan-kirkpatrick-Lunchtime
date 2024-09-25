@@ -13,13 +13,29 @@
         <action
             android:id="@+id/action_restaurantListFragment_to_restaurantMapFragment"
             app:destination="@id/restaurantMapFragment" />
+        <action
+            android:id="@+id/action_restaurantListFragment_to_restaurantDetailFragment"
+            app:destination="@id/restaurantDetailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/restaurantMapFragment"
         android:name="com.kirkpatrick.lunchtime.screens.RestaurantMapFragment"
         android:label="RestaurantMapFragment"
-        tools:layout="@layout/fragment_restaurant_map"/>
+        tools:layout="@layout/fragment_restaurant_map">
+        <action
+            android:id="@+id/action_restaurantMapFragment_to_restaurantDetailFragment"
+            app:destination="@id/restaurantDetailFragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/restaurantDetailFragment"
+        android:name="com.kirkpatrick.lunchtime.screens.RestaurantDetailFragment"
+        android:label="RestaurantDetailFragment"
+        tools:layout="@layout/fragment_restaurant_detail">
+        <argument
+            android:name="restaurant"
+            app:argType="com.kirkpatrick.lunchtime.screens.UiPlace" />
+    </fragment>
 
 </navigation>

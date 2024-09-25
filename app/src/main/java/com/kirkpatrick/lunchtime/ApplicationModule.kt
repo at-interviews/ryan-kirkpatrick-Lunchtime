@@ -27,7 +27,8 @@ object ApplicationModule {
 
         //TODO Move to API
         val fields = listOf("places.id", "places.displayName", "places.rating",
-            "places.user_rating_count", "places.price_level", "places.location").joinToString(",")
+            "places.user_rating_count", "places.price_level", "places.location",
+            "places.formattedAddress", "places.editorialSummary").joinToString(",")
 
         return OkHttpClient.Builder()
             .addInterceptor(Interceptor { chain ->

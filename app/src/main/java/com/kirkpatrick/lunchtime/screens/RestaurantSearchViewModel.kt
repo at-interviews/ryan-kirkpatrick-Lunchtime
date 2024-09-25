@@ -1,6 +1,7 @@
 package com.kirkpatrick.lunchtime.screens
 
 import android.location.Location
+import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +35,7 @@ class RestaurantSearchViewModel @Inject constructor(
         _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val places = placesRepository.searchText(query).map { it.toUiPlace() }
+                val places = placesRepository.searchText(query, lastLocation).map { it.toUiPlace() }
                 _restaurants.value = places
                 if(places.isNotEmpty()) {
                     lastLocation = places.first().let {
@@ -80,13 +82,16 @@ class RestaurantSearchViewModel @Inject constructor(
                 else -> 0
             },
             latitude = this.location.latitude,
-            longitude = this.location.longitude
+            longitude = this.location.longitude,
+            address = this.formattedAddress,
+            description = this.editorialSummary?.content ?: ""
         )
 
     fun setLoading(loading: Boolean) { _loading.value = loading }
 
 }
 
+@Parcelize
 data class UiPlace(
     val id: String,
     val rating: Double,
@@ -94,5 +99,7 @@ data class UiPlace(
     val priceLevel: Int,
     val name: String,
     val latitude: Double,
-    val longitude: Double
-)
+    val longitude: Double,
+    val address: String,
+    val description: String
+) : Parcelable

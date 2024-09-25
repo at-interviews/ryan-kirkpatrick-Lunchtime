@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -86,7 +88,8 @@ class RestaurantListFragment : Fragment() {
                                 }
                                 RestaurantCardView(
                                     modifier = Modifier.padding(bottom = 16.dp),
-                                    restaurant = restaurant
+                                    restaurant = restaurant,
+                                    onClick = { uiPlace -> navigateToDetailScreen(uiPlace) }
                                 )
                             }
 
@@ -96,6 +99,13 @@ class RestaurantListFragment : Fragment() {
             }
         }
     }
+
+    private fun navigateToDetailScreen(uiPlace: UiPlace) {
+        val directions = RestaurantListFragmentDirections
+            .actionRestaurantListFragmentToRestaurantDetailFragment(uiPlace)
+        findNavController().navigate(directions)
+    }
+
 }
 
 
@@ -110,21 +120,27 @@ fun RestaurantCardViewPreview() {
             priceLevel = 2,
             name = "Roberto's",
             latitude = 32.7157,
-            longitude = -117.161
-        )
+            longitude = -117.161,
+            address = "123 Fake St, San Diego, CA",
+            description = "This is a description of the restaurant"
+        ),
+        onClick = {}
     )
 }
 
 @Composable
 fun RestaurantCardView(
     modifier: Modifier = Modifier,
-    restaurant: UiPlace
+    restaurant: UiPlace,
+    onClick: (UiPlace) -> Unit
 ) {
     OutlinedCard(
-        modifier = modifier,
+        modifier = modifier
+            .clickable { onClick(restaurant) },
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
         )
+
     ) {
         Row(
             modifier = Modifier

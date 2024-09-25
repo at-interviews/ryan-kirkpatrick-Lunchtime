@@ -16,6 +16,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -90,11 +91,18 @@ class MainActivity : AppCompatActivity() {
                 R.id.restaurantMapFragment -> {
                     binding.buttonText.setText(R.string.list)
                     binding.buttonIcon.setImageDrawable(getDrawable(R.drawable.ic_list))
+                    binding.switchScreensButton.visibility = View.VISIBLE
+                    binding.searchLayoutWrapper.isEnabled = true
                 }
-
                 R.id.restaurantListFragment -> {
                     binding.buttonText.setText(R.string.map)
                     binding.buttonIcon.setImageDrawable(getDrawable(R.drawable.ic_map))
+                    binding.switchScreensButton.visibility = View.VISIBLE
+                    binding.searchLayoutWrapper.isEnabled = true
+                }
+                R.id.restaurantDetailFragment -> {
+                    binding.switchScreensButton.visibility = View.GONE
+                    binding.searchLayoutWrapper.isEnabled = false
                 }
             }
         }
